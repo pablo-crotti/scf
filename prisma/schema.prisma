@@ -1,0 +1,101 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("POSTGRES_PRISMA_URL")
+    directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model user {
+    id        String   @id @default(cuid())
+    name      String
+    email     String   @unique
+    password  String
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+    @@map(name: "users")
+}
+
+model Account {
+    id           Int           @id @default(autoincrement())
+    balance      Float
+    accountId    Int           @map("account_id")
+    periodId     Int           @map("period_id")
+    period       Period        @relation(fields: [periodId], references: [id])
+    transactions Transaction[]
+    createdAt    DateTime      @default(now()) @map(name: "created_at")
+    updatedAt    DateTime      @updatedAt @map(name: "updated_at")
+
+    @@map(name: "accounts")
+}
+
+model Transaction {
+    id         Int       @id @default(autoincrement())
+    amount     Float
+    balance    Float
+    date       DateTime
+    receipt    String?
+    accountId  Int       @map("account_id")
+    categoryId Int       @map("category_id")
+    category   Category? @relation(fields: [categoryId], references: [id])
+    account    Account   @relation(fields: [accountId], references: [id])
+    createdAt  DateTime  @default(now()) @map(name: "created_at")
+    updatedAt  DateTime  @updatedAt @map(name: "updated_at")
+
+    @@map(name: "transactions")
+}
+
+model Category {
+    id          Int           @id @default(autoincrement())
+    name        String
+    Transaction Transaction[]
+    createdAt   DateTime      @default(now()) @map(name: "created_at")
+    updatedAt   DateTime      @updatedAt @map(name: "updated_at")
+
+    @@map(name: "categories")
+}
+
+model Member {
+    id           Int            @id @default(autoincrement())
+    firstname    String
+    lastname     String
+    phone        String
+    email        String
+    birthdate    DateTime
+    contribution Float
+    isActive     Boolean
+    MemberPeriod MemberPeriod[]
+    createdAt    DateTime       @default(now()) @map(name: "created_at")
+    updatedAt    DateTime       @updatedAt @map(name: "updated_at")
+
+    @@map(name: "members")
+}
+
+model MemberPeriod {
+    id        Int      @id @default(autoincrement())
+    hasPaid   Boolean
+    memberId  Int      @map("member_id")
+    periodId  Int      @map("period_id")
+    member    Member   @relation(fields: [memberId], references: [id])
+    period    Period   @relation(fields: [periodId], references: [id])
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+    @@map(name: "member_periods")
+}
+
+model Period {
+    id           Int            @id @default(autoincrement())
+    startYear    Int
+    endYear      Int
+    isCurrent    Boolean
+    MemberPeriod MemberPeriod[]
+    Account      Account[]
+    createdAt    DateTime       @default(now()) @map(name: "created_at")
+    updatedAt    DateTime       @updatedAt @map(name: "updated_at")
+
+    @@map(name: "periods")
+}
