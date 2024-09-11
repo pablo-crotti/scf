@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import InputText from "@/components/forms/InputText";
-import Button from "@/components/Button";
+import PrimaryButton from "@/components/PrimaryButton";
 import InputError from "@/components/forms/InputError";
 import Loader from "@/components/Loader";
 
@@ -64,9 +64,9 @@ export default function SignInPage() {
           />
           <InputError>{error}</InputError>
           <div className="w-full flex justify-end">
-            <Button type="submit" disabled={!email || !password}>
+            <PrimaryButton type="submit" disabled={!email || !password}>
               Sign in
-            </Button>
+            </PrimaryButton>
           </div>
         </form>
       </div>

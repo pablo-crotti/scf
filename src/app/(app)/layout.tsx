@@ -29,7 +29,10 @@ export default function RootLayout({
           <NavBar />
           <div className="px-4 py-8 w-full">{children}</div>
         </main>
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+        <script
+          async
+          src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"
+        ></script>
       </body>
     </html>
   );

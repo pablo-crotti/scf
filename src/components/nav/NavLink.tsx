@@ -1,11 +1,12 @@
 interface NavLinkProps {
   children: string;
+  path: string;
   isActive: boolean;
 }
 export default function NavLink(props: NavLinkProps) {
   return (
     <a
-      href="#"
+      href={props.path}
       aria-current="page"
       className={`block text-sm py-2 px-3 rounded-lg md:p-0 ${
         props.isActive

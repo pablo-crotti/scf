@@ -37,15 +37,22 @@ export default function NavBar() {
         <div className="hidden w-full md:block md:w-auto " id="navbar-default">
           <ul className="font-medium flex flex-col gap-2 p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
             <li>
-              <NavLink isActive={pathname == "/"}>Overvew</NavLink>
+              <NavLink path="/" isActive={pathname == "/"}>
+                Overvew
+              </NavLink>
             </li>
             <li>
-              <NavLink isActive={pathname == "/transactions"}>
+              <NavLink
+                path="/transactions"
+                isActive={pathname == "/transactions"}
+              >
                 Transactions
               </NavLink>
             </li>
             <li>
-              <NavLink isActive={pathname == "/players"}>Players</NavLink>
+              <NavLink path="/players" isActive={pathname == "/players"}>
+                Players
+              </NavLink>
             </li>
           </ul>
         </div>

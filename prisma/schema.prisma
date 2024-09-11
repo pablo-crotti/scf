@@ -22,7 +22,6 @@ model user {
 model Account {
     id           Int           @id @default(autoincrement())
     balance      Float
-    accountId    Int           @map("account_id")
     periodId     Int           @map("period_id")
     period       Period        @relation(fields: [periodId], references: [id])
     transactions Transaction[]
