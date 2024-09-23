@@ -38,8 +38,11 @@ export default function Home() {
     const periodData = await periodResponse.json();
     const accountData = await accountResponse.json();
 
-    setLastPeriod(periodData);
-    setLastAccount(accountData);
+    if (periodData && accountData) {
+      setLastPeriod(periodData);
+      setLastAccount(accountData);
+    }
+
     setIsLoading(false);
   };
 
@@ -50,44 +53,59 @@ export default function Home() {
   return (
     <>
       {isLoading && <Loader />}
-      <div className="flex justify-between mb-5">
-        <SelectPeriod />
-        <div className="flex gap-8">
-          <NewAccount lastPeriod={lastPeriod} lastAccount={lastAccount} />
-          {lastPeriod.isCurrent && (
-            <ClosePeriod onSuccessfullyClosed={loadData} />
-          )}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <GridElement
-          title={`Accounting ${lastPeriod.startYear}-${lastPeriod.endYear}`}
-        >
-          <AccountTable />
-          <div className="mt-8 flex justify-between">
-            <div className="flex flex-col items-center w-max border border-zinc-300 dark:border-zinc-800 rounded-lg p-4 hover:scale-105 duration-300">
-              <h2 className="font-semibold text-zinc-500">Balance</h2>
-              <p className="text-sm mb-2 text-zinc-500">
-                {new Date(lastAccount.createdAt).toLocaleDateString()}
-              </p>
-              <p>CHF {lastAccount ? lastAccount.balance : "0.00"}</p>
-            </div>
-
-            <div className="flex flex-col items-center w-max border border-zinc-300 dark:border-zinc-800 rounded-lg p-4 hover:scale-105 duration-300">
-              <h2 className="font-semibold text-zinc-500">Balance</h2>
-              <p className="text-sm mb-2 text-zinc-500">Actual</p>
-              <p>CHF {lastAccount.balance}</p>
-            </div>
-
-            <div className="flex flex-col items-center w-max border border-zinc-300 dark:border-zinc-800 rounded-lg p-4 justify-between hover:scale-105 duration-300">
-              <h2 className="font-semibold text-zinc-500">Result</h2>
-              <p className="text-sm mb-2 text-zinc-500"></p>
-              <p className="text-red-500">CHF -300</p>
+      {lastPeriod.id !== 0 && (
+        <>
+          <div className="flex justify-between mb-5">
+            <SelectPeriod />
+            <div className="flex gap-8">
+              <NewAccount lastPeriod={lastPeriod} lastAccount={lastAccount} />
+              {lastPeriod.isCurrent && (
+                <ClosePeriod onSuccessfullyClosed={loadData} />
+              )}
             </div>
           </div>
-        </GridElement>
-      </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <GridElement
+              title={`Accounting ${lastPeriod.startYear}-${lastPeriod.endYear}`}
+            >
+              <AccountTable />
+              <div className="mt-8 flex justify-between">
+                <div className="flex flex-col items-center w-max border border-zinc-300 dark:border-zinc-800 rounded-lg p-4 hover:scale-105 duration-300">
+                  <h2 className="font-semibold text-zinc-500">Balance</h2>
+                  <p className="text-sm mb-2 text-zinc-500">
+                    {new Date(lastAccount.createdAt).toLocaleDateString()}
+                  </p>
+                  <p>CHF {lastAccount ? lastAccount.balance : "0.00"}</p>
+                </div>
+
+                <div className="flex flex-col items-center w-max border border-zinc-300 dark:border-zinc-800 rounded-lg p-4 hover:scale-105 duration-300">
+                  <h2 className="font-semibold text-zinc-500">Balance</h2>
+                  <p className="text-sm mb-2 text-zinc-500">Actual</p>
+                  <p>CHF {lastAccount.balance}</p>
+                </div>
+
+                <div className="flex flex-col items-center w-max border border-zinc-300 dark:border-zinc-800 rounded-lg p-4 justify-between hover:scale-105 duration-300">
+                  <h2 className="font-semibold text-zinc-500">Result</h2>
+                  <p className="text-sm mb-2 text-zinc-500"></p>
+                  <p className="text-red-500">CHF -300</p>
+                </div>
+              </div>
+            </GridElement>
+          </div>
+        </>
+      )}
+      {lastPeriod.id === 0 && (
+        <div className="w-full h-[calc(100vh-8rem)] flex justify-center items-center">
+          <div className="flex flex-col gap-4 justify-center items-center">
+            <p>
+              It seems that you haven&apos;t created an account yet. Create one
+              now.
+            </p>
+            <NewAccount lastPeriod={lastPeriod} lastAccount={lastAccount} />
+          </div>
+        </div>
+      )}
     </>
   );
 }

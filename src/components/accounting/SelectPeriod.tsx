@@ -29,23 +29,23 @@ export default function SelectPeriod() {
     setOptions(options);
   };
 
-  const loadPeriods = async () => {
-    const response = await fetch("/api/periods");
-
-    if (!response.ok) {
-      console.error(response.statusText);
-      return;
-    }
-
-    const data = await response.json();
-    findActivePeriodOrLast(data);
-    setOptionsFromPeriods(data);
-    setIsLoading(false);
-  };
-
   useEffect(() => {
+    const loadPeriods = async () => {
+      const response = await fetch("/api/periods");
+
+      if (!response.ok) {
+        console.error(response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+      findActivePeriodOrLast(data);
+      setOptionsFromPeriods(data);
+      setIsLoading(false);
+    };
+
     loadPeriods();
-  });
+  }, []);
   return (
     <>
       {isLoading && <Loader />}

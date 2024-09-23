@@ -23,9 +23,19 @@ export default function NewAccount(props: NewAccountProps) {
 
   const actualYear = new Date().getFullYear();
 
-  const [periodStartYear, setPeriodStartYear] = useState(actualYear);
-  const [periodEndYear, setPeriodEndYear] = useState(actualYear + 1);
-  const [balance, setBalance] = useState("");
+  let newStartYear = actualYear;
+  let newEndYear = actualYear + 1;
+  let newBalance = "";
+
+  if (props.lastPeriod.id !== 0) {
+    newStartYear = props.lastPeriod.endYear;
+    newEndYear = props.lastPeriod.endYear + 1;
+    newBalance = props.lastAccount.balance.toString();
+  }
+
+  const [periodStartYear, setPeriodStartYear] = useState(newStartYear);
+  const [periodEndYear, setPeriodEndYear] = useState(newEndYear);
+  const [balance, setBalance] = useState(newBalance);
 
   const [error, setError] = useState("");
   const [startYearError, setStartYearError] = useState(false);
@@ -101,16 +111,6 @@ export default function NewAccount(props: NewAccountProps) {
     closeModal();
     setIsLoading(false);
   };
-
-  useEffect(() => {
-    setPeriodStartYear(props.lastPeriod.endYear);
-    setPeriodEndYear(props.lastPeriod.endYear + 1);
-    setBalance(props.lastAccount.balance.toString());
-  }, [
-    props.lastPeriod.id,
-    props.lastPeriod.endYear,
-    props.lastAccount.balance,
-  ]);
 
   return (
     <>

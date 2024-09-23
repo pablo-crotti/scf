@@ -25,7 +25,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <main className="flex min-h-screen bg-zinc-200 dark:bg-zinc-950 flex flex-col">
+        <main className="flex min-h-screen bg-zinc-200 dark:bg-zinc-950 flex-col">
           <NavBar />
           <div className="px-4 py-8 w-full">{children}</div>
         </main>
